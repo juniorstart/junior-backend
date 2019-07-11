@@ -1,34 +1,25 @@
-version: '3.4'
+version: '3.7'
 
-networks:
-  juniorstart-dev:
-    driver: bridge
-    
 services:
-  JuniorStart:
-    image: juniorstart:latest
-    depends_on:
-      - "postgres_image"
+  api:
+    container_name: 'junior_api'
+    image: 'junior_api'
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: 'api.Dockerfile'
+    links:
+      - 'db'
+    extra_hosts:
+      - "junior_db:172.17.0.1"
     ports:
-      - "8000:80"
-    environment:
-      DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=juniorstartdb;username=admin;password=admin"
-    networks:
-      - juniorstart-dev
-  
-  postgres_image:
-    image: postgres:latest
+      - '5001:80'
+    depends_on:
+      - 'db'
+  db:
+    container_name: 'junior_db'
+    image: "junior_db"
+    build:
+      context: .
+      dockerfile: "db.Dockerfile"
     ports:
-      - "5432"
-    restart: always
-    environment:
-      POSTGRES_USER: "admin"
-      POSTGRES_PASSWORD: "admin"
-      POSTGRES_DB: "juniorstartdb"
-    networks:
-      - juniorstart-dev
-volumes:
-  db_volume:
+      - '5432:5432'   

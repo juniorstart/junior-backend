@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using JuniorStart.Models;
+using JuniorStart.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JuniorStart.Controllers
 {
@@ -10,11 +13,18 @@ namespace JuniorStart.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly ApplicationContext context;
+
+        public ValuesController(ApplicationContext _context)
+        {
+            context = _context;
+        }
+
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IQueryable<User> Get()
         {
-            return new string[] {"value1", "value2"};
+            return context.Users; 
         }
 
         // GET api/values/5
@@ -26,8 +36,11 @@ namespace JuniorStart.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult> Post([FromBody] User user)
         {
+            await context.Users.AddAsync(user);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
         // PUT api/values/5
