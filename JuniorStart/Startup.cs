@@ -1,19 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using JuniorStart.Models;
+﻿using FluentValidation.AspNetCore;
+using JuniorStart.Configurations;
 using JuniorStart.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace JuniorStart
 {
@@ -24,21 +16,28 @@ namespace JuniorStart
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationContext>(options =>
-            {
-                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL"));
-            });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.ConfigureDatabase(Configuration);
+
+            services.AddMvc(config => { config.RespectBrowserAcceptHeader = true; })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddFluentValidation(fv =>
+                {
+                    fv.RegisterValidatorsFromAssemblyContaining<Startup>();
+                    fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                });
 
             services.AddTransient<ApplicationSeed>();
+
+            services.ConfigureFilters();
+
+//          services.ConfigureAuthentication();
+            services.ConfigureSwagger();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationSeed applicationSeed)
         {
             if (env.IsDevelopment())
@@ -47,14 +46,18 @@ namespace JuniorStart
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.ExceptionHandler();
+//          app.UseAuthentication();
 
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            applicationSeed.SeedAsync(app.ApplicationServices).Wait();
+            app.EnableSwagger();
+
+            ApplicationSeed.SeedAsync(app.ApplicationServices).Wait();
         }
     }
 }

@@ -1,15 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Dynamic;
 
-namespace JuniorStart.Models
+namespace JuniorStart.Entities
 {
-    public class User
+    public interface IEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        public string Name { get; set; }
-        public string Lastname { get; set; }
+        int Id { get; set; }
     }
 }
