@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using JuniorStart.Models;
+using JuniorStart.Filters;
+using JuniorStart.Entities;
+using JuniorStart.DTO;
 using JuniorStart.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace JuniorStart.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class ValuesController : ControllerBase
     {
         private readonly ApplicationContext context;
@@ -20,36 +21,60 @@ namespace JuniorStart.Controllers
             context = _context;
         }
 
-        // GET api/values
+        /// <summary>
+        /// Get Users
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IQueryable<User> Get()
+        public IList<UserViewModel> Get()
         {
-            return context.Users; 
+            return context.Users.ToList().ConvertAll(x => new UserViewModel()
+            {
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                Login = x.Login,
+                Password = x.Password
+            });
         }
 
-        // GET api/values/5
+        [ServiceFilter(typeof(EntityExistsAttribute<User>))]
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<string> GetById(int id)
         {
-            return "value";
+            var user = HttpContext.Items["entity"] as User;
+            return Ok(user);
         }
 
-        // POST api/values
+
+        /// <summary>
+        /// Add new user
+        /// </summary>
+        /// <param name="userm"></param>
+        /// <returns></returns>
+        /// <response code="204">If successfully created user</response>
+        [ServiceFilter(typeof(ModelValidation))]
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] User user)
+        public async Task<ActionResult> Post([FromBody] UserViewModel userm)
         {
-            await context.Users.AddAsync(user);
+            var user = new User()
+            {
+                Email = userm.Email,
+                Password = userm.Password,
+                Login = userm.Login,
+                FirstName = userm.Password,
+                LastName = userm.LastName,
+                IsActive = true
+            };
+            context.Users.Add(user);
             await context.SaveChangesAsync();
-            return NoContent();
+            return CreatedAtAction(nameof(GetById), new {id = user.Id}, user);
         }
 
-        // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/values/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

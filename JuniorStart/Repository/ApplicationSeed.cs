@@ -6,7 +6,7 @@ namespace JuniorStart.Repository
 {
     public class ApplicationSeed
     {
-        public async Task SeedAsync(IServiceProvider serviceProvider)
+        public static async Task SeedAsync(IServiceProvider serviceProvider)
         {
             using (var serviceScope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
