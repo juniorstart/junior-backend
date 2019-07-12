@@ -22,4 +22,4 @@ services:
       context: .
       dockerfile: "db.Dockerfile"
     ports:
-      - '5432:5432'   
+      - '5431:5432'   
