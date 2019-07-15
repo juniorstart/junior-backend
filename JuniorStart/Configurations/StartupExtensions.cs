@@ -70,7 +70,7 @@ namespace JuniorStart.Configurations
             });
         }
 
-        public static void ConfigureAuthentication(this IServiceCollection services,IConfiguration configuration)
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             byte[] key = Encoding.ASCII.GetBytes(configuration.GetSection("JWT").GetSection("SecretKey").Value);
             services.AddAuthentication(x =>
@@ -85,13 +85,14 @@ namespace JuniorStart.Configurations
                         OnTokenValidated = context =>
                         {
                             var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-                            var userId = context.Principal.Identity.Name;
+                            string userId = context.Principal.Identity.Name;
                             var user = userService.GetById(userId);
                             if (user == null)
                             {
                                 // return unauthorized if user no longer exists
                                 context.Fail("Unauthorized");
                             }
+
                             return System.Threading.Tasks.Task.FromResult(0);
                         }
                     };
@@ -128,7 +129,7 @@ namespace JuniorStart.Configurations
                     var error = context.Features.Get<IExceptionHandlerFeature>();
                     if (error != null)
                     {
-                        Exception exception = error.Error;
+                        var exception = error.Error;
                         await context.Response.WriteAsync(new Error()
                         {
                             StatusCode = 500,

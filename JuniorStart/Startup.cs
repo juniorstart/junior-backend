@@ -1,16 +1,12 @@
-﻿using System.Text;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using JuniorStart.Configurations;
 using JuniorStart.Repository;
 using JuniorStart.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using System.Threading.Tasks;
 
 namespace JuniorStart
 {
@@ -41,6 +37,7 @@ namespace JuniorStart
             services.ConfigureCors();
             services.ConfigureSwagger();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationSeed applicationSeed)
@@ -53,7 +50,7 @@ namespace JuniorStart
             {
                 app.UseHsts();
             }
-            
+
             app.ExceptionHandler();
             app.UseAuthentication();
             app.UseHttpsRedirection();

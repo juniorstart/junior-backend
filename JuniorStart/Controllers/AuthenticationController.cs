@@ -1,4 +1,3 @@
-using System;
 using JuniorStart.DTO;
 using JuniorStart.Entities;
 using JuniorStart.Filters;
@@ -12,8 +11,8 @@ namespace JuniorStart.Controllers
     [Route("/")]
     public class AuthenticationController : ControllerBase
     {
-        private IAuthenticationService _authenticationService;
-        private IUserService _userService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IUserService _userService;
 
         public AuthenticationController(IAuthenticationService authenticationService, IUserService userService)
         {
