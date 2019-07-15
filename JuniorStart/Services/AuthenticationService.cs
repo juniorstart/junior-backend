@@ -1,23 +1,28 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using JuniorStart.Entities;
 using JuniorStart.Repository;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JuniorStart.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly ApplicationContext _context;
-
+        private readonly IConfiguration configuration;
         public AuthenticationService(ApplicationContext context)
         {
             _context = context;
         }
         
-        public bool Authenticate(string username, string password)
+        public string Authenticate(string username, string password)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                return false;
+                return null;
             User user = _context.Users.FirstOrDefault(x => x.Login == username);
             
             if (user == null)
@@ -25,15 +30,28 @@ namespace JuniorStart.Services
 
             if (!VerifyPasswordHash(password, user.PasswordHash,user.PasswordSalt))
                 throw new Exception("Invalid Password");
-
-            return true;
+            
+            var tokenHandler = new JwtSecurityTokenHandler();
+            byte[] key = Encoding.ASCII.GetBytes(configuration.GetSection("JWT").GetSection("SecretKey").Value);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[] 
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(2),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            string tokenToReturn = tokenHandler.WriteToken(token);
+            
+            return tokenToReturn;
         }
         private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
-            if (password == null) throw new ArgumentNullException(password);
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", password);
-            if (storedHash.Length != 32) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "storedHash");
-            if (storedSalt.Length != 64) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "storedHash");
+            if (storedHash.Length != 32) return false;
+            if (storedSalt.Length != 64) return false;
 
             using (var hmac = new System.Security.Cryptography.HMACSHA256(storedSalt))
             {
