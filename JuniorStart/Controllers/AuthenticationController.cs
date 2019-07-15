@@ -15,26 +15,19 @@ namespace JuniorStart.Controllers
         private IAuthenticationService _authenticationService;
         private IUserService _userService;
 
-        public AuthenticationController(IAuthenticationService authenticationService,IUserService userService)
+        public AuthenticationController(IAuthenticationService authenticationService, IUserService userService)
         {
             _authenticationService = authenticationService;
             _userService = userService;
         }
-        
+
         [ModelValidation]
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]LoginModel userParam)
+        public IActionResult Authenticate([FromBody] LoginModel userParam)
         {
-            try
-            {
-                string authenticated = _authenticationService.Authenticate(userParam.Login, userParam.Password);
-                return Ok(authenticated);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            string authenticated = _authenticationService.Authenticate(userParam.Login, userParam.Password);
+            return Ok(authenticated);
         }
 
         [ModelValidation]
@@ -44,6 +37,5 @@ namespace JuniorStart.Controllers
         {
             return Ok(_userService.Create(userParam));
         }
-        
     }
 }
