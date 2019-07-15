@@ -1,4 +1,5 @@
 using System;
+using JuniorStart.DTO;
 using JuniorStart.Entities;
 using JuniorStart.Filters;
 using JuniorStart.Services;
@@ -23,7 +24,7 @@ namespace JuniorStart.Controllers
         [ModelValidation]
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]User userParam)
+        public IActionResult Authenticate([FromBody]UserViewModel userParam)
         {
             try
             {
@@ -41,9 +42,6 @@ namespace JuniorStart.Controllers
         [HttpPost("register")]
         public IActionResult Register([FromBody] User userParam)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
-
             return Ok(_userService.Create(userParam));
         }
         

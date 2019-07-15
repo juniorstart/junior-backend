@@ -21,8 +21,7 @@ namespace JuniorStart.Services
         
         public string Authenticate(string username, string password)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                return null;
+            
             User user = _context.Users.FirstOrDefault(x => x.Login == username);
             
             if (user == null)

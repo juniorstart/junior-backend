@@ -17,9 +17,7 @@ namespace JuniorStart.Services
         
         public bool Create(User user)
         {
-            if (string.IsNullOrWhiteSpace(user.Password))
-                throw new Exception("Password is required");
-            
+
             if (_context.Users.FirstOrDefault(x => x.Login == user.Login) != null)
                 throw new Exception("Username \"" + user.Login + "\" is already taken");
 
@@ -34,9 +32,9 @@ namespace JuniorStart.Services
 
             return true;
         }
-        public User GetById(string id)
+        public User GetById(string login)
         {
-            return _context.Users.FirstOrDefault(x => x.Login == id);
+            return _context.Users.FirstOrDefault(x => x.Login == login);
         }
         public IEnumerable<User> GetAll()
         {
@@ -44,9 +42,6 @@ namespace JuniorStart.Services
         }
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-
             using (var hmac = new System.Security.Cryptography.HMACSHA256())
             {
                 passwordSalt = hmac.Key;

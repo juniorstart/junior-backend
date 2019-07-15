@@ -36,11 +36,9 @@ namespace JuniorStart
                 });
 
             services.AddTransient<ApplicationSeed>();
-
             services.ConfigureFilters();
-            
             services.ConfigureAuthentication(Configuration);
-
+            services.ConfigureCors();
             services.ConfigureSwagger();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
@@ -55,10 +53,9 @@ namespace JuniorStart
             {
                 app.UseHsts();
             }
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            
             app.ExceptionHandler();
             app.UseAuthentication();
-
             app.UseHttpsRedirection();
             app.UseMvc();
 
