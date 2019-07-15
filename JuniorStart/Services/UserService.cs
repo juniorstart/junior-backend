@@ -15,16 +15,16 @@ namespace JuniorStart.Services
             _context = context;
         }
         
-        public bool Create(User user, string password)
+        public bool Create(User user)
         {
-            if (string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(user.Password))
                 throw new Exception("Password is required");
             
             if (_context.Users.FirstOrDefault(x => x.Login == user.Login) != null)
                 throw new Exception("Username \"" + user.Login + "\" is already taken");
 
             byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            CreatePasswordHash(user.Password, out passwordHash, out passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
 

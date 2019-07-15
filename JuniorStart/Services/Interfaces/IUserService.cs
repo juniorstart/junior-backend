@@ -4,7 +4,7 @@ namespace JuniorStart.Services
 {
     public interface IUserService
     {
-        bool Create(User user, string password);
+        bool Create(User user);
         User GetById(string id);
     }
 }
