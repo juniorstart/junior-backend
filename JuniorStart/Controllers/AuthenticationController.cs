@@ -24,7 +24,7 @@ namespace JuniorStart.Controllers
         [ModelValidation]
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]UserViewModel userParam)
+        public IActionResult Authenticate([FromBody]LoginModel userParam)
         {
             try
             {

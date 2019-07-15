@@ -58,7 +58,7 @@ namespace JuniorStart
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
-
+            app.UseCors("CorsPolicy");
             app.EnableSwagger();
 
             ApplicationSeed.SeedAsync(app.ApplicationServices).Wait();
