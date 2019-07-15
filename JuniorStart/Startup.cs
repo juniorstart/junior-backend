@@ -55,7 +55,7 @@ namespace JuniorStart
             {
                 app.UseHsts();
             }
-
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.ExceptionHandler();
             app.UseAuthentication();
 
