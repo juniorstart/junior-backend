@@ -39,40 +39,7 @@ namespace JuniorStart
 
             services.ConfigureFilters();
             
-            //jwt
-            byte[] key = Encoding.ASCII.GetBytes(Configuration.GetSection("JWT").GetSection("SecretKey").Value);
-            services.AddAuthentication(x =>
-                {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
-                {
-                    x.Events = new JwtBearerEvents
-                    {
-                        OnTokenValidated = context =>
-                        {
-                            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-                            var userId = context.Principal.Identity.Name;
-                            var user = userService.GetById(userId);
-                            if (user == null)
-                            {
-                                // return unauthorized if user no longer exists
-                                context.Fail("Unauthorized");
-                            }
-                            return Task.FromResult(0);
-                        }
-                    };
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            services.ConfigureAuthentication(Configuration);
 
             services.ConfigureSwagger();
             services.AddScoped<IAuthenticationService, AuthenticationService>();

@@ -1,10 +1,12 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using JuniorStart.DTO;
 using JuniorStart.Entities;
 using JuniorStart.Filters;
 using JuniorStart.Repository;
+using JuniorStart.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -68,21 +70,37 @@ namespace JuniorStart.Configurations
             });
         }
 
-        public static void ConfigureAuthentication(this IServiceCollection services)
+        public static void ConfigureAuthentication(this IServiceCollection services,IConfiguration configuration)
         {
+            byte[] key = Encoding.ASCII.GetBytes(configuration.GetSection("JWT").GetSection("SecretKey").Value);
             services.AddAuthentication(x =>
                 {
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(jwt =>
+                .AddJwtBearer(x =>
                 {
-                    jwt.RequireHttpsMetadata = false;
-                    jwt.SaveToken = true;
-                    jwt.TokenValidationParameters = new TokenValidationParameters()
+                    x.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+                            var userId = context.Principal.Identity.Name;
+                            var user = userService.GetById(userId);
+                            if (user == null)
+                            {
+                                // return unauthorized if user no longer exists
+                                context.Fail("Unauthorized");
+                            }
+                            return System.Threading.Tasks.Task.FromResult(0);
+                        }
+                    };
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(new byte[] { }),
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
                         ValidateAudience = false
                     };
