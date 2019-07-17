@@ -1,6 +1,4 @@
-using JuniorStart.Entities;
-
-namespace JuniorStart.Services
+namespace JuniorStart.Services.Interfaces
 {
     public interface IAuthenticationService
     {

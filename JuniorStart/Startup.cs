@@ -1,12 +1,12 @@
 ﻿using FluentValidation.AspNetCore;
 using JuniorStart.Configurations;
 using JuniorStart.Repository;
-using JuniorStart.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace JuniorStart
 {
@@ -23,8 +23,9 @@ namespace JuniorStart
         {
             services.ConfigureDatabase(Configuration);
 
-            services.AddMvc(config => { config.RespectBrowserAcceptHeader = true; })
+            services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => { options.SerializerSettings.Formatting = Formatting.Indented; })
                 .AddFluentValidation(fv =>
                 {
                     fv.RegisterValidatorsFromAssemblyContaining<Startup>();
@@ -36,8 +37,7 @@ namespace JuniorStart
             services.ConfigureAuthentication(Configuration);
             services.ConfigureCors();
             services.ConfigureSwagger();
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IUserService, UserService>();
+            services.ConfigureServices();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationSeed applicationSeed)
@@ -54,8 +54,8 @@ namespace JuniorStart
             app.ExceptionHandler();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc();
             app.UseCors("CorsPolicy");
+            app.UseMvc();
             app.EnableSwagger();
 
             ApplicationSeed.SeedAsync(app.ApplicationServices).Wait();

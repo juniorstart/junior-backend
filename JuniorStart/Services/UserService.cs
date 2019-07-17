@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using JuniorStart.Entities;
 using JuniorStart.Repository;
+using JuniorStart.Services.Interfaces;
 
 namespace JuniorStart.Services
 {
     public class UserService : IUserService
     {
         private readonly ApplicationContext _context;
-        
+
         public UserService(ApplicationContext context)
         {
             _context = context;
         }
-        
+
         public bool Create(User user)
         {
-
             if (_context.Users.FirstOrDefault(x => x.Login == user.Login) != null)
                 throw new Exception("Username \"" + user.Login + "\" is already taken");
 
@@ -28,18 +28,21 @@ namespace JuniorStart.Services
 
             _context.Users.Add(user);
 
-             _context.SaveChanges();
+            _context.SaveChanges();
 
             return true;
         }
-        public User GetById(string login)
+
+        public User GetById(int id)
         {
-            return _context.Users.FirstOrDefault(x => x.Login == login);
+            return _context.Users.FirstOrDefault(x => x.Id == id);
         }
+
         public IEnumerable<User> GetAll()
         {
             return _context.Users.ToList();
         }
+
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA256())

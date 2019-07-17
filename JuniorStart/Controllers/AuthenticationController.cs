@@ -2,6 +2,7 @@ using JuniorStart.DTO;
 using JuniorStart.Entities;
 using JuniorStart.Filters;
 using JuniorStart.Services;
+using JuniorStart.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
