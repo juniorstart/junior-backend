@@ -1,5 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using JuniorStart.Configurations;
+using JuniorStart.Middlewares;
 using JuniorStart.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +58,7 @@ namespace JuniorStart
             app.UseCors("CorsPolicy");
             app.UseMvc();
             app.EnableSwagger();
+            app.UseMiddleware<JwtTokenSlidingExpirationMiddleware>();
 
             ApplicationSeed.SeedAsync(app.ApplicationServices).Wait();
         }
