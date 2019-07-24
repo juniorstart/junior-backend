@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using JuniorStart.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -18,13 +19,13 @@ namespace JuniorStart.Middlewares
 
         public Task Invoke(HttpContext context)
         {
-            var authorization = context.Request.Headers["Authorization"].FirstOrDefault();
+            string authorization = context.Request.Headers["Authorization"].FirstOrDefault();
             if (authorization == null || !authorization.ToLower().StartsWith("bearer") || string.IsNullOrWhiteSpace(authorization.Substring(6)))
             {
                 return _next(context);
             }
             
-            var claimsPrincipal = context.Request.HttpContext.User;
+            ClaimsPrincipal claimsPrincipal = context.Request.HttpContext.User;
             if (claimsPrincipal == null || !claimsPrincipal.Identity.IsAuthenticated)
             {
                 return _next(context);
