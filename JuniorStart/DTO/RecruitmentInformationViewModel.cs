@@ -1,5 +1,4 @@
 using System;
-using JuniorStart.Entities;
 
 namespace JuniorStart.DTO
 {

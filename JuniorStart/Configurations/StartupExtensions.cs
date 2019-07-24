@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using JuniorStart.DTO;
 using JuniorStart.Entities;
+using JuniorStart.Factories;
 using JuniorStart.Filters;
 using JuniorStart.Repository;
 using JuniorStart.Services;
@@ -51,6 +52,8 @@ namespace JuniorStart.Configurations
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IModelFactory, ModelFactory>();
+            services.AddScoped<IRecruitmentService, RecruitmentService>();
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -64,7 +67,7 @@ namespace JuniorStart.Configurations
                     Description = "Documentation for API",
                     TermsOfService = null
                 });
-                
+
                 string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
