@@ -38,6 +38,7 @@ namespace JuniorStart.Configurations
                 .NotNull()
                 .EmailAddress(EmailValidationMode.Net4xRegex)
                 .WithMessage("Email not match the rules!");
+            
         }
     }
 }

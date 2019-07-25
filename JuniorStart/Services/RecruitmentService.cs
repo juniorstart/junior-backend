@@ -32,7 +32,7 @@ namespace JuniorStart.Services
             List<RecruitmentInformationViewModel> recruitments = _context.RecruitmentInformations
                 .Where(rec => rec.Owner.Id.Equals(ownerId))
                 .Select(rec => _modelFactory.Create(rec)).ToList();
-            return recruitments;
+            return recruitments ?? new List<RecruitmentInformationViewModel>();
         }
 
         public bool CreateRecruitmentInfo(RecruitmentInformationViewModel requestModel)
@@ -43,12 +43,13 @@ namespace JuniorStart.Services
 
         public bool UpdateRecruitmentInfo(int id, RecruitmentInformationViewModel requestModel)
         {
-            RecruitmentInformation originalModel = _context.RecruitmentInformations.FirstOrDefault(model => model.Id.Equals(id));
+            RecruitmentInformation originalModel =
+                _context.RecruitmentInformations.FirstOrDefault(model => model.Id.Equals(id));    
             RecruitmentInformation parsedModel = _modelFactory.Map(requestModel);
 
             if (originalModel == null)
             {
-                return false;
+                throw new Exception("Model not found");
             }
 
             parsedModel.Id = originalModel.Id;
@@ -59,8 +60,9 @@ namespace JuniorStart.Services
 
         public bool ArchiveRecruitmentInfo(int id)
         {
-            RecruitmentInformation modelToArchive = _context.RecruitmentInformations.FirstOrDefault(model => model.Id.Equals(id));
-            
+            RecruitmentInformation modelToArchive =
+                _context.RecruitmentInformations.FirstOrDefault(model => model.Id.Equals(id));
+
             if (modelToArchive != null)
             {
                 modelToArchive.IsActive = false;

@@ -22,6 +22,7 @@ namespace JuniorStart.Configurations
                 .NotEmpty().WithMessage("You must provide work place!");
 
             RuleFor(ri => ri.OwnerId)
+                .GreaterThan(0)
                 .NotNull()
                 .NotEmpty().WithMessage("You must assign this!");
         }
