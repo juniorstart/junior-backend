@@ -10,5 +10,6 @@ namespace JuniorStart.Factories
         TodoListViewModel Create(TodoList todoList);
         UserViewModel Create(User user);
         RecruitmentInformation Map(RecruitmentInformationViewModel recruitmentInformation);
+        User Map(UserViewModel userViewModel);
     }
 }

@@ -71,5 +71,18 @@ namespace JuniorStart.Factories
                 DateOfCompanyReply = recruitmentInformation.DateOfCompanyReply
             };
         }
+
+        public User Map(UserViewModel userViewModel)
+        {
+            return new User
+            {
+                Email = userViewModel.Email,
+                LastName = userViewModel.LastName,
+                Login = userViewModel.Login,
+                Password = userViewModel.Password,
+                FirstName = userViewModel.FirstName,
+                IsActive = true
+            };
+        }
     }
 }

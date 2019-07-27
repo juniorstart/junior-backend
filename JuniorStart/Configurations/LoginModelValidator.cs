@@ -13,6 +13,7 @@ namespace JuniorStart.Configurations
                 .MaximumLength(30)
                 .Matches("^[a-zA-Z].*")
                 .WithMessage("Login must be between 6 and 30 letters, and starts with letter.");
+                
             RuleFor(l=>l.Password)
                 .NotEmpty()
                 .MinimumLength(6)

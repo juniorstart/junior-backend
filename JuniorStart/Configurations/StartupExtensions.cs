@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using JuniorStart.DTO;
@@ -41,7 +42,6 @@ namespace JuniorStart.Configurations
 
         public static void ConfigureFilters(this IServiceCollection services)
         {
-            services.AddScoped<ModelValidation>();
             services.AddScoped<EntityExistsAttribute<User>>();
             services.AddScoped<EntityExistsAttribute<TodoList>>();
             services.AddScoped<EntityExistsAttribute<Task>>();
@@ -135,15 +135,16 @@ namespace JuniorStart.Configurations
             {
                 config.Run(async context =>
                 {
-                    context.Response.StatusCode = 500;
+                    context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "application/json";
                     var error = context.Features.Get<IExceptionHandlerFeature>();
                     if (error != null)
                     {
                         var exception = error.Error;
-                        await context.Response.WriteAsync(new Error()
+
+                        await context.Response.WriteAsync(new Error
                         {
-                            StatusCode = 500,
+                            StatusCode = context.Response.StatusCode,
                             ErrorMessage = exception.Message
                         }.ToString());
                     }

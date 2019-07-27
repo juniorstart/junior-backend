@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JuniorStart.DTO;
 using JuniorStart.Entities;
+using JuniorStart.Factories;
 using JuniorStart.Repository;
 using JuniorStart.Services.Interfaces;
 
@@ -10,17 +12,20 @@ namespace JuniorStart.Services
     public class UserService : IUserService
     {
         private readonly ApplicationContext _context;
+        private readonly IModelFactory _modelFactory;
 
-        public UserService(ApplicationContext context)
+        public UserService(ApplicationContext context, IModelFactory modelFactory)
         {
             _context = context;
+            _modelFactory = modelFactory;
         }
 
-        public bool Create(User user)
+        public bool Create(UserViewModel userViewModel)
         {
-            if (_context.Users.FirstOrDefault(x => x.Login == user.Login) != null)
-                throw new Exception("Username \"" + user.Login + "\" is already taken");
-
+            if (_context.Users.FirstOrDefault(x => x.Login == userViewModel.Login) != null)
+                throw new Exception("Username \"" + userViewModel.Login + "\" is already taken");
+            
+            User user = _modelFactory.Map(userViewModel);
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(user.Password, out passwordHash, out passwordSalt);
             user.PasswordHash = passwordHash;

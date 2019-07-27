@@ -1,13 +1,11 @@
 using JuniorStart.DTO;
-using JuniorStart.Entities;
-using JuniorStart.Filters;
-using JuniorStart.Services;
 using JuniorStart.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace JuniorStart.Controllers
 {
+    [Produces("application/json")]
     [ApiController]
     [Route("/")]
     public class AuthenticationController : ControllerBase
@@ -21,8 +19,24 @@ namespace JuniorStart.Controllers
             _userService = userService;
         }
 
-        [ModelValidation]
-        [AllowAnonymous]
+        /// <summary>
+        /// Login user
+        /// </summary>
+        /// <param name="userParam">Login and password</param>
+        /// <returns>JWT token</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /authenticate
+        ///     {
+        ///         "login": "johnWick",
+        ///         "password": "J0hnw!ck"
+        ///     }
+        /// </remarks>
+        /// <response code="200">Returns the JWT Token</response>
+        /// <response code="500">If unexpected error appear</response>
+        [ProducesResponseType(typeof(SecurityToken), 200)]
+        [ProducesResponseType(500)]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] LoginModel userParam)
         {
@@ -30,10 +44,29 @@ namespace JuniorStart.Controllers
             return Ok(authenticated);
         }
 
-        [ModelValidation]
-        [AllowAnonymous]
+        /// <summary>
+        /// Register new user
+        /// </summary>
+        /// <param name="userParam">user information</param>
+        /// <returns>Returns register status</returns>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /register
+        ///     {
+        ///         "firstName": "Jonathan",
+        ///         "lastName": "Wick",
+        ///         "email": "johnwick@example.com",
+        ///         "login": "johnWick",
+        ///         "password": "J0hnw!ck"
+        ///     }
+        /// </remarks>
+        /// <response code="200">Returns register status</response>
+        /// <response code="500">If unexpected error appear</response>
+        [ProducesResponseType(typeof(bool), 200)]
+        [ProducesResponseType(500)]
         [HttpPost("register")]
-        public IActionResult Register([FromBody] User userParam)
+        public IActionResult Register([FromBody] UserViewModel userParam)
         {
             return Ok(_userService.Create(userParam));
         }
