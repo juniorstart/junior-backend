@@ -23,17 +23,7 @@ namespace JuniorStart.Factories
 
         public RecruitmentInformation Map(RecruitmentInformationDto model)
         {
-            return new RecruitmentInformation
-            {
-                City = model.City,
-                Notes = model.Notes,
-                OwnerId = model.OwnerId,
-                CompanyName = model.CompanyName,
-                CompanyReply = model.CompanyReply,
-                WorkPlace = model.WorkPlace,
-                LinkToApplication = model.LinkToApplication,
-                DateOfCompanyReply = model.DateOfCompanyReply
-            };
+            return new RecruitmentInformation(model);
         }
     }
 }

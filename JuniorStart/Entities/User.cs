@@ -35,6 +35,8 @@ namespace JuniorStart.Entities
             Login = model.Login;
             Password = model.Password;
             IsActive = true;
+            RecruitmentInformations = new List<RecruitmentInformation>();
+            TodoLists = new List<TodoList>();
         }
         public void SetSalt(byte[] salt)
         {
@@ -44,24 +46,14 @@ namespace JuniorStart.Entities
         {
             PasswordHash = hash;
         }
-        public void SetTodoLists(List<TodoList> list)
+        public void AddItemToTodoList(TodoList list)
         {
-            var firstNotSecond = list.Where(i => !TodoLists.Contains(i)).ToList();
-            var secondNotFirst = TodoLists.Where(i => !list.Contains(i)).ToList();
-            if (!firstNotSecond.Any() && !secondNotFirst.Any())
-            {
-                TodoLists = list;
-            }
+            TodoLists.Add(list);
         }
         
-        public void SetIRecruitmentInformations(List<RecruitmentInformation> list)
+        public void AddItemToRecruitmentInformations(RecruitmentInformation listItem)
         {
-            var firstNotSecond = list.Where(i => !RecruitmentInformations.Contains(i)).ToList();
-            var secondNotFirst = RecruitmentInformations.Where(i => !list.Contains(i)).ToList();
-            if (!firstNotSecond.Any() && !secondNotFirst.Any())
-            {
-                RecruitmentInformations = list;
-            }
+            RecruitmentInformations.Add(listItem);
         }
         public void SetIsActive(bool isActive)
         {
@@ -115,7 +107,6 @@ namespace JuniorStart.Entities
             {
                 return;
             }
-
             FirstName = firstName;
         }
     }

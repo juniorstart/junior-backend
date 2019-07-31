@@ -66,7 +66,7 @@ namespace JuniorStart.Services
 
             if (modelToArchive != null)
             {
-                modelToArchive.IsActive = false;
+                modelToArchive.SetIsActive(false);
                 _context.RecruitmentInformations.Update(modelToArchive);
             }
 

@@ -17,12 +17,7 @@ namespace JuniorStart.Factories
 
         public TodoList Map(TodoListDto model)
         {
-            return new TodoList
-            {
-                Id = model.Id,
-                Name = model.Name,
-                OwnerId = model.OwnerId
-            };
+            return new TodoList(model);
         }
     }
 }
