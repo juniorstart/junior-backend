@@ -1,9 +1,10 @@
 using FluentValidation;
 using JuniorStart.DTO;
+using JuniorStart.ViewModels;
 
 namespace JuniorStart.Configurations
 {
-    public class TodoListValidator : AbstractValidator<TodoListViewModel>
+    public class TodoListValidator : AbstractValidator<TodoListDto>
     {
         public TodoListValidator()
         {

@@ -3,7 +3,7 @@ using JuniorStart.DTO;
 
 namespace JuniorStart.Configurations
 {
-    public class RecruitmentInformationValidator : AbstractValidator<RecruitmentInformationViewModel>
+    public class RecruitmentInformationValidator : AbstractValidator<RecruitmentInformationDto>
     {
         public RecruitmentInformationValidator()
         {

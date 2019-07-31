@@ -1,6 +1,6 @@
 namespace JuniorStart.DTO
 {
-    public class UserViewModel
+    public class UserDto
     {
         /// <summary>
         /// User id

@@ -1,9 +1,10 @@
 using FluentValidation;
 using JuniorStart.DTO;
+using JuniorStart.ViewModels;
 
 namespace JuniorStart.Configurations
 {
-    public class LoginModelValidator : AbstractValidator<LoginModel>
+    public class LoginModelValidator : AbstractValidator<LoginRequest>
     {
         public LoginModelValidator()
         {

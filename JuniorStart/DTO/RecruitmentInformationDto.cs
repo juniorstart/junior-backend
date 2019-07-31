@@ -2,7 +2,7 @@ using System;
 
 namespace JuniorStart.DTO
 {
-    public class RecruitmentInformationViewModel
+    public class RecruitmentInformationDto
     {
         /// <summary>
         /// Recruitment id

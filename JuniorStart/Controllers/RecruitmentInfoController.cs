@@ -31,7 +31,7 @@ namespace JuniorStart.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
         [HttpGet("{ownerId}/recruitments")]
-        [ProducesResponseType(typeof(List<RecruitmentInformationViewModel>), 200)]
+        [ProducesResponseType(typeof(List<RecruitmentInformationDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         public IActionResult GetRecruitmentInfoForUser(int ownerId)
@@ -48,7 +48,7 @@ namespace JuniorStart.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
         [HttpGet("{id}", Name = "GetRecruitmentInfoById")]
-        [ProducesResponseType(typeof(RecruitmentInformationViewModel), 200)]
+        [ProducesResponseType(typeof(RecruitmentInformationDto), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
         public IActionResult Get(int id)
@@ -79,11 +79,11 @@ namespace JuniorStart.Controllers
         /// <response code="500">If unexpected error appear</response>
         /// <returns></returns>
         [HttpPost(Name = "addInformation")]
-        [ProducesResponseType(typeof(RecruitmentInformationViewModel), 201)]
+        [ProducesResponseType(typeof(RecruitmentInformationDto), 201)]
         [ProducesResponseType(typeof(IDictionary<string, string>), 400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult Post([FromBody] RecruitmentInformationViewModel requestModel)
+        public IActionResult Post([FromBody] RecruitmentInformationDto requestModel)
         {
             _ = _recruitmentService.CreateRecruitmentInfo(requestModel);
             return CreatedAtRoute("GetRecruitmentInfoById", new {id = requestModel.Id}, requestModel);
@@ -104,7 +104,7 @@ namespace JuniorStart.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult Put([FromBody] RecruitmentInformationViewModel requestModel, int recruitmentId)
+        public IActionResult Put([FromBody] RecruitmentInformationDto requestModel, int recruitmentId)
         {
             _ = _recruitmentService.UpdateRecruitmentInfo(recruitmentId, requestModel);
             return StatusCode(200, requestModel);

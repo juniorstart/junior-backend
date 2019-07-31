@@ -5,7 +5,7 @@ namespace JuniorStart.Services.Interfaces
 {
     public interface IUserService
     {
-        bool Create(UserViewModel user);
-        User GetById(int id);
+        bool Create(UserDto user);
+        User Get(int id);
     }
 }

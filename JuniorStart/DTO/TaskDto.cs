@@ -1,6 +1,6 @@
 namespace JuniorStart.DTO
 {
-    public class TaskViewModel
+    public class TaskDto
     {
         public int Id { get; set; }
 

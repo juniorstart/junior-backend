@@ -4,7 +4,7 @@ using JuniorStart.DTO;
 
 namespace JuniorStart.Configurations
 {
-    public class UserValidator : AbstractValidator<UserViewModel>
+    public class UserValidator : AbstractValidator<UserDto>
     {
         public UserValidator()
         {
@@ -38,7 +38,6 @@ namespace JuniorStart.Configurations
                 .NotNull()
                 .EmailAddress(EmailValidationMode.Net4xRegex)
                 .WithMessage("Email not match the rules!");
-            
         }
     }
 }

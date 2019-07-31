@@ -1,15 +1,12 @@
 using JuniorStart.DTO;
 using JuniorStart.Entities;
+using JuniorStart.ViewModels;
 
 namespace JuniorStart.Factories
 {
-    public interface IModelFactory
+    public interface IModelFactory<TC, TM> where TC : class where TM : class
     {
-        RecruitmentInformationViewModel Create(RecruitmentInformation recruitmentInformation);
-        TaskViewModel Create(Task task);
-        TodoListViewModel Create(TodoList todoList);
-        UserViewModel Create(User user);
-        RecruitmentInformation Map(RecruitmentInformationViewModel recruitmentInformation);
-        User Map(UserViewModel userViewModel);
+        TC Create(TM model);
+        TM Map(TC model);
     }
 }

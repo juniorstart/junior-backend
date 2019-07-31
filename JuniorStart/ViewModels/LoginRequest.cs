@@ -1,6 +1,6 @@
-namespace JuniorStart.DTO
+namespace JuniorStart.ViewModels
 {
-    public class LoginModel
+    public class LoginRequest
     {
         /// <summary>
         /// User login

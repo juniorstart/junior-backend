@@ -5,10 +5,10 @@ namespace JuniorStart.Services.Interfaces
 {
     public interface IRecruitmentService
     {
-        RecruitmentInformationViewModel GetRecruitmentInfoById(int id);
-        List<RecruitmentInformationViewModel> GetRecruitmentsForUser(int ownerId);
-        bool CreateRecruitmentInfo(RecruitmentInformationViewModel requestModel);
-        bool UpdateRecruitmentInfo(int id, RecruitmentInformationViewModel requestModel);
+        RecruitmentInformationDto GetRecruitmentInfoById(int id);
+        List<RecruitmentInformationDto> GetRecruitmentsForUser(int ownerId);
+        bool CreateRecruitmentInfo(RecruitmentInformationDto requestModel);
+        bool UpdateRecruitmentInfo(int id, RecruitmentInformationDto requestModel);
         bool ArchiveRecruitmentInfo(int id);
     }
 }

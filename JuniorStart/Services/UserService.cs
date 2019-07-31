@@ -12,20 +12,20 @@ namespace JuniorStart.Services
     public class UserService : IUserService
     {
         private readonly ApplicationContext _context;
-        private readonly IModelFactory _modelFactory;
+        private readonly IModelFactory<UserDto, User> _modelFactory;
 
-        public UserService(ApplicationContext context, IModelFactory modelFactory)
+        public UserService(ApplicationContext context, IModelFactory<UserDto, User> modelFactory)
         {
             _context = context;
             _modelFactory = modelFactory;
         }
 
-        public bool Create(UserViewModel userViewModel)
+        public bool Create(UserDto userDto)
         {
-            if (_context.Users.FirstOrDefault(x => x.Login == userViewModel.Login) != null)
-                throw new Exception("Username \"" + userViewModel.Login + "\" is already taken");
-            
-            User user = _modelFactory.Map(userViewModel);
+            if (_context.Users.FirstOrDefault(x => x.Login == userDto.Login) != null)
+                throw new Exception("Username \"" + userDto.Login + "\" is already taken");
+
+            User user = _modelFactory.Map(userDto);
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash(user.Password, out passwordHash, out passwordSalt);
             user.PasswordHash = passwordHash;
@@ -38,7 +38,7 @@ namespace JuniorStart.Services
             return true;
         }
 
-        public User GetById(int id)
+        public User Get(int id)
         {
             return _context.Users.FirstOrDefault(x => x.Id == id);
         }
