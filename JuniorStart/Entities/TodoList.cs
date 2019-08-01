@@ -24,6 +24,10 @@ namespace JuniorStart.Entities
             OwnerId = listDto.OwnerId;
         }
 
+        public TodoList()
+        {
+            
+        }
         public void SetName(string name)
         {
             Name = name;

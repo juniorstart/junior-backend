@@ -38,6 +38,11 @@ namespace JuniorStart.Entities
             RecruitmentInformations = new List<RecruitmentInformation>();
             TodoLists = new List<TodoList>();
         }
+
+        public User()
+        {
+            
+        }
         public void SetSalt(byte[] salt)
         {
             PasswordSalt = salt;

@@ -1,6 +1,7 @@
 using JuniorStart.DTO;
 using JuniorStart.Services.Interfaces;
 using JuniorStart.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -9,6 +10,7 @@ namespace JuniorStart.Controllers
     [Produces("application/json")]
     [ApiController]
     [Route("/")]
+    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;

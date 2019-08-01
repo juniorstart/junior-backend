@@ -24,6 +24,11 @@ namespace JuniorStart.Entities
             TodoListId = taskDto.TodoListId;
         }
 
+        public Task()
+        {
+            
+        }
+
         public void SetDescription(string desc)
         {
             Description = desc;

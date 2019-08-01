@@ -25,7 +25,8 @@ namespace JuniorStart.Entities
         public bool IsActive { get; private set; }
 
         public User Owner { get; set; }
-
+        
+        public RecruitmentInformation(){}
         public RecruitmentInformation(RecruitmentInformationDto model)
         {
             CompanyName = model.CompanyName;
