@@ -14,7 +14,7 @@ namespace JuniorStart.Entities
         public string City { get; private set; }
         public string WorkPlace { get; private set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public DateTime ApplicationDate { get; set; }
 
         public DateTime DateOfCompanyReply { get; private set; }
@@ -38,6 +38,7 @@ namespace JuniorStart.Entities
             LinkToApplication = model.LinkToApplication;
             IsActive = true;
             OwnerId = model.OwnerId;
+            ApplicationDate = model.ApplicationDate;
         }
 
         public void SetIsActive(bool active)

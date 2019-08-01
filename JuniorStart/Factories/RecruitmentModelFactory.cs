@@ -17,7 +17,8 @@ namespace JuniorStart.Factories
                 WorkPlace = model.WorkPlace,
                 LinkToApplication = model.LinkToApplication,
                 CompanyReply = model.CompanyReply,
-                DateOfCompanyReply = model.DateOfCompanyReply
+                DateOfCompanyReply = model.DateOfCompanyReply,
+                ApplicationDate = model.ApplicationDate
             };
         }
 

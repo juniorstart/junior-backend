@@ -38,7 +38,10 @@ namespace JuniorStart.Services
 
         public bool CreateRecruitmentInfo(RecruitmentInformationDto requestModel)
         {
-            _context.RecruitmentInformations.Add(_modelFactory.Map(requestModel));
+            RecruitmentInformation newModel = _modelFactory.Map(requestModel);
+            newModel.Owner = _context.Users.SingleOrDefault(x => x.Id == requestModel.OwnerId);
+            
+            _context.RecruitmentInformations.Add(newModel);
             return _context.SaveChanges() > 0;
         }
 
