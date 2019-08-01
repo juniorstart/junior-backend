@@ -3,7 +3,7 @@ using JuniorStart.DTO;
 
 namespace JuniorStart.Configurations
 {
-    public class TaskValidator : AbstractValidator<TaskViewModel>
+    public class TaskValidator : AbstractValidator<TaskDto>
     {
         public TaskValidator()
         {

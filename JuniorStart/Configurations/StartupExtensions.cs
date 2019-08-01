@@ -1,18 +1,23 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using JuniorStart.DTO;
 using JuniorStart.Entities;
+using JuniorStart.Factories;
 using JuniorStart.Filters;
 using JuniorStart.Repository;
 using JuniorStart.Services;
 using JuniorStart.Services.Interfaces;
+using JuniorStart.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -40,7 +45,6 @@ namespace JuniorStart.Configurations
 
         public static void ConfigureFilters(this IServiceCollection services)
         {
-            services.AddScoped<ModelValidation>();
             services.AddScoped<EntityExistsAttribute<User>>();
             services.AddScoped<EntityExistsAttribute<TodoList>>();
             services.AddScoped<EntityExistsAttribute<Task>>();
@@ -51,6 +55,33 @@ namespace JuniorStart.Configurations
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
+            
+            services.RegisterAllTypes(typeof(IModelFactory<,>), typeof(RecruitmentModelFactory),
+                ServiceLifetime.Scoped);
+            services.AddScoped<IRecruitmentService, RecruitmentService>();
+        }
+
+        private static void RegisterAllTypes(this IServiceCollection services, Type baseType, Type sourceType,
+            ServiceLifetime lifetime)
+        {
+            Assembly assembly = sourceType.Assembly;
+
+            foreach (var type in assembly.GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract))
+            {
+                foreach (var i in type.GetInterfaces())
+                {
+                    if (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IModelFactory<,>))
+                    {
+                        // NOTE: Due to a limitation of Microsoft.DependencyInjection we cannot 
+                        // register an open generic interface type without also having an open generic 
+                        // implementation type. So, we convert to a closed generic interface 
+                        // type to register.
+                        var interfaceType = typeof(IModelFactory<,>).MakeGenericType(i.GetGenericArguments());
+                        services.Add(new ServiceDescriptor(interfaceType, type, lifetime));
+                    }
+                }
+            }
         }
 
         public static void ConfigureSwagger(this IServiceCollection services)
@@ -64,7 +95,7 @@ namespace JuniorStart.Configurations
                     Description = "Documentation for API",
                     TermsOfService = null
                 });
-                
+
                 string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
@@ -95,7 +126,7 @@ namespace JuniorStart.Configurations
                         {
                             var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                             int userId = int.Parse(context.Principal.Identity.Name);
-                            var user = userService.GetById(userId);
+                            var user = userService.Get(userId);
                             if (user == null)
                             {
                                 context.Fail("Unauthorized");
@@ -132,15 +163,16 @@ namespace JuniorStart.Configurations
             {
                 config.Run(async context =>
                 {
-                    context.Response.StatusCode = 500;
+                    context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                     context.Response.ContentType = "application/json";
                     var error = context.Features.Get<IExceptionHandlerFeature>();
                     if (error != null)
                     {
                         var exception = error.Error;
-                        await context.Response.WriteAsync(new Error()
+
+                        await context.Response.WriteAsync(new ErrorResponse
                         {
-                            StatusCode = 500,
+                            StatusCode = context.Response.StatusCode,
                             ErrorMessage = exception.Message
                         }.ToString());
                     }

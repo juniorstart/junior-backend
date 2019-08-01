@@ -4,7 +4,7 @@ using JuniorStart.DTO;
 
 namespace JuniorStart.Configurations
 {
-    public class UserValidator : AbstractValidator<UserViewModel>
+    public class UserValidator : AbstractValidator<UserDto>
     {
         public UserValidator()
         {

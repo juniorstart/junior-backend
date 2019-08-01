@@ -9,15 +9,12 @@ namespace JuniorStart.Middlewares
     public class JwtTokenSlidingExpirationMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IAuthenticationService _authenticationService;
-
-        public JwtTokenSlidingExpirationMiddleware(RequestDelegate next, IAuthenticationService authenticationService)
+        public JwtTokenSlidingExpirationMiddleware(RequestDelegate next)
         {
             _next = next;
-            _authenticationService = authenticationService;
         }
 
-        public Task Invoke(HttpContext context)
+        public Task Invoke(HttpContext context, IAuthenticationService _authenticationService)
         {
             string authorization = context.Request.Headers["Authorization"].FirstOrDefault();
             if (authorization == null || !authorization.ToLower().StartsWith("bearer") || string.IsNullOrWhiteSpace(authorization.Substring(6)))
