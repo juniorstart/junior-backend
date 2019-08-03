@@ -57,7 +57,7 @@ namespace JuniorStart.Controllers
         /// <summary>
         /// Get all Todolists for user
         /// </summary>
-        /// <param name="id">Owner id</param>
+        /// <param name="ownerId">Owner id</param>
         /// <returns></returns>
         /// <response code="200">Returns todolists</response>
         /// <response code="401">Unauthorized</response>
@@ -137,7 +137,7 @@ namespace JuniorStart.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
         /// <returns></returns>
-        [HttpPut("{id}", Name = "updateInformation")]
+        [HttpPut("{id}", Name = "updateTask")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
@@ -159,7 +159,7 @@ namespace JuniorStart.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        [HttpDelete("{id}", Name = "DeleteTask")]
+        [HttpDelete("task/{id}", Name = "DeleteTask")]
         public IActionResult DeleteTask(int id)
         {
             _todoListService.ArchiveTask(id);
