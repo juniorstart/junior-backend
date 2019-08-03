@@ -7,6 +7,7 @@ namespace JuniorStart.Services.Interfaces
     {
         TaskDto GetTaskById(int id);
         List<TodoListDto> GetTodoListsForUser(int ownerId);
+        TodoListDto GetTodoListById(int id);
         bool CreateTodoList(TodoListDto requestModel);
         bool CreateTask(TaskDto requestModel);
         bool UpdateTask(int id, TaskDto requestModel);

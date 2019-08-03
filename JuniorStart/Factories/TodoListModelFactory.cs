@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using JuniorStart.DTO;
 using JuniorStart.Entities;
 
@@ -12,7 +13,8 @@ namespace JuniorStart.Factories
                 Id = model.Id,
                 Name = model.Name,
                 OwnerId = model.Owner.Id,
-                Status = true
+                Status = true,
+                Tasks = new List<TaskDto>()
             };
         }
 
@@ -23,7 +25,8 @@ namespace JuniorStart.Factories
                 Id = model.Id,
                 Name = model.Name,
                 OwnerId = model.OwnerId,
-                Status = true
+                Status = true,
+                Tasks = new List<Task>()
             };
         }
     }

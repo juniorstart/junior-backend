@@ -40,6 +40,12 @@ namespace JuniorStart.Services
             return todoLists;
         }
 
+        public TodoListDto GetTodoListById(int id)
+        {
+            TodoList todolist = _context.TodoLists.FirstOrDefault(rec => rec.Id == id);
+            return _todoListModelFactory.Create(todolist);
+        }
+
         public bool CreateTodoList(TodoListDto requestModel)
         {
             _context.TodoLists.Add(_todoListModelFactory.Map(requestModel));
