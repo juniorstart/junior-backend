@@ -13,5 +13,6 @@ namespace JuniorStart.Entities
 
         public int OwnerId { get; set; }
         public User Owner { get; set; }
+        public bool Status { get; set; }
     }
 }

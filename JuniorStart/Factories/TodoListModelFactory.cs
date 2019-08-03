@@ -11,7 +11,8 @@ namespace JuniorStart.Factories
             {
                 Id = model.Id,
                 Name = model.Name,
-                OwnerId = model.Owner.Id
+                OwnerId = model.Owner.Id,
+                Status = true
             };
         }
 
@@ -21,7 +22,8 @@ namespace JuniorStart.Factories
             {
                 Id = model.Id,
                 Name = model.Name,
-                OwnerId = model.OwnerId
+                OwnerId = model.OwnerId,
+                Status = true
             };
         }
     }

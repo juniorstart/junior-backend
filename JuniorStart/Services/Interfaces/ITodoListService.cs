@@ -11,7 +11,6 @@ namespace JuniorStart.Services.Interfaces
         bool CreateTask(TaskDto requestModel);
         bool UpdateTask(int id, TaskDto requestModel);
         bool ArchiveTask(int id);
-        bool ArchiveTodoLust(int id);
-        bool ChangeStatusOfsTask(int id);
+        bool ArchiveTodoList(int id);
     }
 }

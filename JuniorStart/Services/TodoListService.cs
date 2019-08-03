@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JuniorStart.DTO;
@@ -29,37 +30,64 @@ namespace JuniorStart.Services
 
         public List<TodoListDto> GetTodoListsForUser(int ownerId)
         {
-            throw new System.NotImplementedException();
+            var todoLists = new List<TodoListDto>();
+            var todoList = _context.TodoLists.Where(rec => rec.OwnerId == ownerId);
+            foreach (var list in todoList)
+            {
+                todoLists.Add(_todoListModelFactory.Create(list));
+            }
+
+            return todoLists;
         }
 
         public bool CreateTodoList(TodoListDto requestModel)
         {
-            throw new System.NotImplementedException();
+            _context.TodoLists.Add(_todoListModelFactory.Map(requestModel));
+            return _context.SaveChanges() > 0;
         }
 
         public bool CreateTask(TaskDto requestModel)
         {
-            throw new System.NotImplementedException();
+            _context.Tasks.Add(_taskModelFactory.Map(requestModel));
+            return _context.SaveChanges() > 0;
         }
-
         public bool UpdateTask(int id, TaskDto requestModel)
         {
-            throw new System.NotImplementedException();
+            Task originalTask = 
+                _context.Tasks.FirstOrDefault(model => model.Id.Equals(id));
+            Task parsedModel = _taskModelFactory.Map(requestModel);
+
+            if (originalTask is null)
+            {
+                throw new Exception("Model not found");
+            }
+            parsedModel.Id = originalTask.Id;
+            _context.Entry(originalTask).CurrentValues.SetValues(parsedModel);
+            return _context.SaveChanges() > 0;
         }
 
         public bool ArchiveTask(int id)
         {
-            throw new System.NotImplementedException();
+            Task taskToArchive = _context.Tasks.FirstOrDefault(rec => rec.Id == id);
+            
+            if (!(taskToArchive is null))
+            {
+                taskToArchive.Status = false;
+                _context.Tasks.Update(taskToArchive);
+            }
+            return _context.SaveChanges() > 0;
         }
 
-        public bool ArchiveTodoLust(int id)
+        public bool ArchiveTodoList(int id)
         {
-            throw new System.NotImplementedException();
-        }
+            TodoList todoListToArchieve = _context.TodoLists.FirstOrDefault(rec => rec.Id == id);
+            if (!(todoListToArchieve is null))
+            {
+                todoListToArchieve.Status = false;
+                _context.TodoLists.Update(todoListToArchieve);
+            }
 
-        public bool ChangeStatusOfsTask(int id)
-        {
-            throw new System.NotImplementedException();
+            return _context.SaveChanges() > 0;
         }
     }
 }

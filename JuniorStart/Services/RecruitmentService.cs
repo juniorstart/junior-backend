@@ -48,7 +48,7 @@ namespace JuniorStart.Services
                 _context.RecruitmentInformations.FirstOrDefault(model => model.Id.Equals(id));
             RecruitmentInformation parsedModel = _modelFactory.Map(requestModel);
 
-            if (originalModel == null)
+            if (originalModel is null)
             {
                 throw new Exception("Model not found");
             }
