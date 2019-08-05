@@ -52,6 +52,7 @@ namespace JuniorStart
                 app.UseHsts();
             }
 
+            
             app.ExceptionHandler();
             app.UseAuthentication();
             app.UseHttpsRedirection();

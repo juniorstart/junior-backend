@@ -18,13 +18,7 @@ namespace JuniorStart.Factories
 
         public Task Map(TaskDto model)
         {
-            return new Task
-            {
-                Description = model.Description,
-                Id = model.Id,
-                Status = model.Status,
-                TodoListId = model.TodoListId
-            };
+            return new Task(model);
         }
     }
 }

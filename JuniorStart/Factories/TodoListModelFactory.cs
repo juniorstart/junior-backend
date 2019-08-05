@@ -20,6 +20,7 @@ namespace JuniorStart.Factories
 
         public TodoList Map(TodoListDto model)
         {
+
             return new TodoList
             {
                 Id = model.Id,
@@ -28,6 +29,7 @@ namespace JuniorStart.Factories
                 Status = true,
                 Tasks = new List<Task>()
             };
+
         }
     }
 }

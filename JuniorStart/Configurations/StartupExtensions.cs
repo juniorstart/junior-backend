@@ -55,8 +55,9 @@ namespace JuniorStart.Configurations
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
-//            services.RegisterAllTypes(typeof(IModelFactory<,>), typeof(RecruitmentModelFactory<,>),
-//                ServiceLifetime.Scoped);
+            
+            services.RegisterAllTypes(typeof(IModelFactory<,>), typeof(RecruitmentModelFactory),
+                ServiceLifetime.Scoped);
             services.AddScoped<IRecruitmentService, RecruitmentService>();
         }
 
@@ -77,7 +78,7 @@ namespace JuniorStart.Configurations
                         // implementation type. So, we convert to a closed generic interface 
                         // type to register.
                         var interfaceType = typeof(IModelFactory<,>).MakeGenericType(i.GetGenericArguments());
-                        services.Add(new ServiceDescriptor(interfaceType, baseType, lifetime));
+                        services.Add(new ServiceDescriptor(interfaceType, type, lifetime));
                     }
                 }
             }

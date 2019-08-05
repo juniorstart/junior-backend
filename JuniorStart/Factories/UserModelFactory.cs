@@ -19,14 +19,8 @@ namespace JuniorStart.Factories
 
         public User Map(UserDto model)
         {
-            return new User
-            {
-                Email = model.Email,
-                LastName = model.LastName,
-                FirstName = model.FirstName,
-                Password = model.Password,
-                IsActive = true
-            };
+            return new User(model);
+
         }
     }
 }

@@ -1,6 +1,7 @@
 using JuniorStart.DTO;
 using JuniorStart.Services.Interfaces;
 using JuniorStart.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -8,12 +9,12 @@ namespace JuniorStart.Controllers
 {
     [Produces("application/json")]
     [ApiController]
-    [Route("/")]
+    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserService _userService;
-
+        
         public AuthenticationController(IAuthenticationService authenticationService, IUserService userService)
         {
             _authenticationService = authenticationService;
@@ -38,7 +39,7 @@ namespace JuniorStart.Controllers
         /// <response code="500">If unexpected error appear</response>
         [ProducesResponseType(typeof(SecurityToken), 200)]
         [ProducesResponseType(500)]
-        [HttpPost("login")]
+        [HttpPost("/Login")]
         public IActionResult Authenticate([FromBody] LoginRequest userParam)
         {
             string authenticated = _authenticationService.Authenticate(userParam.Login, userParam.Password);
@@ -66,7 +67,7 @@ namespace JuniorStart.Controllers
         /// <response code="500">If unexpected error appear</response>
         [ProducesResponseType(typeof(bool), 200)]
         [ProducesResponseType(500)]
-        [HttpPost("register")]
+        [HttpPost("/Register")]
         public IActionResult Register([FromBody] UserViewModel userParam)
         {
             return Ok(_userService.Create(userParam.User));
