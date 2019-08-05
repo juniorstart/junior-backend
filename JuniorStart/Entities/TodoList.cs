@@ -13,6 +13,7 @@ namespace JuniorStart.Entities
         public string Name { get; private set; }
 
         private List<Task> Tasks { get;  set; }
+        public bool Status { get; set; }
 
         private int OwnerId { get;  set; }
         public User Owner { get; private set; }
@@ -42,5 +43,6 @@ namespace JuniorStart.Entities
         {
             OwnerId = id;
         }
+
     }
 }

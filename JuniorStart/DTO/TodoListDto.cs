@@ -11,5 +11,6 @@ namespace JuniorStart.DTO
         public List<TaskDto> Tasks { get; set; }
 
         public int OwnerId { get; set; }
+        public bool Status { get; set; }
     }
 }
