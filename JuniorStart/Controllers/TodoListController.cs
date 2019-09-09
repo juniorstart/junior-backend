@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using JuniorStart.DTO;
-using JuniorStart.Entities;
 using JuniorStart.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JuniorStart.Controllers
@@ -14,10 +14,11 @@ namespace JuniorStart.Controllers
     public class TodoListController : ControllerBase
     {
         private readonly ITodoListService _todoListService;
-
-        public TodoListController(ITodoListService todoListService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public TodoListController(ITodoListService todoListService,IHttpContextAccessor httpContextAccessor)
         {
             _todoListService = todoListService;
+            _httpContextAccessor = httpContextAccessor;
         }
         
         /// <summary>
@@ -57,18 +58,17 @@ namespace JuniorStart.Controllers
         /// <summary>
         /// Get all Todolists for user
         /// </summary>
-        /// <param name="ownerId">Owner id</param>
         /// <returns></returns>
         /// <response code="200">Returns todolists</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
-        [HttpGet("{id}")]
+        [HttpGet]
         [ProducesResponseType(typeof(List<TodoListDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult GetAllTodoLists(int ownerId)
+        public IActionResult GetAllTodoLists()
         {
-            return Ok(_todoListService.GetTodoListsForUser(ownerId));
+            return Ok(_todoListService.GetTodoListsForUser(int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name)));
         }
 
         /// <summary>
@@ -80,7 +80,6 @@ namespace JuniorStart.Controllers
         ///     POST /todolist/create
         ///     {
         ///        "name": "Test",
-        ///        "ownerId": 1,
         ///     }
         /// </remarks>
         /// <param name="requestModel">request object</param>
@@ -95,12 +94,13 @@ namespace JuniorStart.Controllers
         [ProducesResponseType(500)]
         public IActionResult CreateTodoList(TodoListDto requestModel)
         {
+            requestModel.OwnerId = int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
             _ = _todoListService.CreateTodoList(requestModel);
             return CreatedAtRoute("GetTodoListById", new {id = requestModel.Id}, requestModel);
         }
         
         /// <summary>
-        /// Add new TodoList
+        /// Add new task
         /// </summary>
         /// <remarks>
         /// Sample request:

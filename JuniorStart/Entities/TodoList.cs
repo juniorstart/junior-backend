@@ -15,7 +15,7 @@ namespace JuniorStart.Entities
         private List<Task> Tasks { get;  set; }
         public bool Status { get; set; }
 
-        private int OwnerId { get;  set; }
+        public int OwnerId { get;  private set; }
         public User Owner { get; private set; }
 
         public TodoList(TodoListDto listDto)
@@ -27,7 +27,7 @@ namespace JuniorStart.Entities
 
         public TodoList()
         {
-            
+            Tasks = new List<Task>();
         }
         public void SetName(string name)
         {
