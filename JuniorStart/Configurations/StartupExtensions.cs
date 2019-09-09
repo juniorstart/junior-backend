@@ -59,6 +59,8 @@ namespace JuniorStart.Configurations
             services.RegisterAllTypes(typeof(IModelFactory<,>), typeof(RecruitmentModelFactory),
                 ServiceLifetime.Scoped);
             services.AddScoped<IRecruitmentService, RecruitmentService>();
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         private static void RegisterAllTypes(this IServiceCollection services, Type baseType, Type sourceType,

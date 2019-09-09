@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using JuniorStart.DTO;
 using JuniorStart.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JuniorStart.Controllers
@@ -16,27 +17,28 @@ namespace JuniorStart.Controllers
     public class RecruitmentInfoController : ControllerBase
     {
         private readonly IRecruitmentService _recruitmentService;
-
-        public RecruitmentInfoController(IRecruitmentService recruitmentService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        
+        public RecruitmentInfoController(IRecruitmentService recruitmentService,IHttpContextAccessor httpContextAccessor)
         {
             _recruitmentService = recruitmentService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
         /// Get all recruitments for current user
         /// </summary>
-        /// <param name="ownerId">Current user id</param>
         /// <returns></returns>
         /// <response code="200">Returns recruitment info</response>
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
-        [HttpGet("{ownerId}/recruitments")]
+        [HttpGet]
         [ProducesResponseType(typeof(List<RecruitmentInformationDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult GetRecruitmentInfoForUser(int ownerId)
+        public IActionResult GetRecruitmentInfoForUser()
         {
-            return Ok(_recruitmentService.GetRecruitmentsForUser(ownerId));
+            return Ok(_recruitmentService.GetRecruitmentsForUser(int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name)));
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace JuniorStart.Controllers
         [ProducesResponseType(500)]
         public IActionResult Get(int id)
         {
-            return Ok(_recruitmentService.GetRecruitmentInfoById(id));
+            return Ok(_recruitmentService.GetRecruitmentInfoById(int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name)));
         }
 
         /// <summary>
@@ -69,7 +71,6 @@ namespace JuniorStart.Controllers
         ///        "notes": "Good interview",
         ///        "dateOfCompanyReply": "24.07.2019",
         ///        "linkToApplication": "https://google.com",
-        ///        "ownerId": 1
         ///     }
         /// </remarks>
         /// <param name="requestModel">request object</param>
@@ -85,6 +86,7 @@ namespace JuniorStart.Controllers
         [ProducesResponseType(500)]
         public IActionResult Post([FromBody] RecruitmentInformationDto requestModel)
         {
+            requestModel.OwnerId = int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name);
             _ = _recruitmentService.CreateRecruitmentInfo(requestModel);
             return CreatedAtRoute("GetRecruitmentInfoById", new {id = requestModel.Id}, requestModel);
         }

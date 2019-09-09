@@ -78,7 +78,7 @@ namespace JuniorStart.Services
             
             if (!(taskToArchive is null))
             {
-                taskToArchive.Status = false;
+                taskToArchive.SetStatus(false);
                 _context.Tasks.Update(taskToArchive);
             }
             return _context.SaveChanges() > 0;
