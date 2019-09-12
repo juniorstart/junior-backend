@@ -36,7 +36,7 @@ namespace JuniorStart.Controllers
         [ProducesResponseType(typeof(List<RecruitmentInformationDto>), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult GetRecruitmentInfoForUser()
+        public IActionResult Get()
         {
             return Ok(_recruitmentService.GetRecruitmentsForUser(int.Parse(_httpContextAccessor.HttpContext.User.Identity.Name)));
         }
@@ -101,12 +101,12 @@ namespace JuniorStart.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
         /// <returns></returns>
-        [HttpPut("{id}", Name = "updateInformation")]
+        [HttpPut("{recruitmentId}", Name = "updateInformation")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
-        public IActionResult Put([FromBody] RecruitmentInformationDto requestModel, int recruitmentId)
+        public IActionResult Put(int recruitmentId, RecruitmentInformationDto requestModel)
         {
             _ = _recruitmentService.UpdateRecruitmentInfo(recruitmentId, requestModel);
             return StatusCode(200, requestModel);

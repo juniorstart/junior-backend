@@ -31,9 +31,9 @@ namespace JuniorStart.Services
         public List<RecruitmentInformationDto> GetRecruitmentsForUser(int ownerId)
         {
             List<RecruitmentInformationDto> recruitments = _context.RecruitmentInformations
-                .Where(rec => rec.Owner.Id.Equals(ownerId))
+                .Where(rec => rec.Owner.Id.Equals(ownerId) && rec.IsActive)
                 .Select(rec => _modelFactory.Create(rec)).ToList();
-            return recruitments ?? new List<RecruitmentInformationDto>();
+            return recruitments;
         }
 
         public bool CreateRecruitmentInfo(RecruitmentInformationDto requestModel)
@@ -65,7 +65,7 @@ namespace JuniorStart.Services
         public bool ArchiveRecruitmentInfo(int id)
         {
             RecruitmentInformation modelToArchive =
-                _context.RecruitmentInformations.FirstOrDefault(model => model.Id.Equals(id));
+                _context.RecruitmentInformations.FirstOrDefault(model => model.Id == id);
 
             if (modelToArchive != null)
             {

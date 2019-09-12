@@ -31,7 +31,7 @@ namespace JuniorStart.DTO
         /// date of company reply
         /// </summary>
         /// <example>2019-08-09 16:05:07</example>
-        public DateTime DateOfCompanyReply { get; set; }
+        public DateTime? DateOfCompanyReply { get; set; }
         
         /// <summary>
         /// Application date

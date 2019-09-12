@@ -13,7 +13,7 @@ namespace JuniorStart.Factories
                 City = model.City,
                 Notes = model.Notes,
                 CompanyName = model.CompanyName,
-                OwnerId = model.Owner.Id,
+                OwnerId = model.OwnerId,
                 WorkPlace = model.WorkPlace,
                 LinkToApplication = model.LinkToApplication,
                 CompanyReply = model.CompanyReply,

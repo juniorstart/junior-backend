@@ -17,7 +17,7 @@ namespace JuniorStart.Entities
 
         public DateTime ApplicationDate { get; set; }
 
-        public DateTime DateOfCompanyReply { get; private set; }
+        public DateTime? DateOfCompanyReply { get; private set; }
         public bool CompanyReply { get; private set; }
         public string Notes { get; private set; }
         public string LinkToApplication { get; private set; }
