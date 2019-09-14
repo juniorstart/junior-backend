@@ -137,7 +137,7 @@ namespace JuniorStart.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
         /// <returns></returns>
-        [HttpPut("{id}", Name = "updateTask")]
+        [HttpPut("{taskId}", Name = "updateTask")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]

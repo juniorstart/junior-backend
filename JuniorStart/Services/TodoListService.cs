@@ -34,10 +34,11 @@ namespace JuniorStart.Services
         {
             var query = from TodoList in _context.TodoLists
                 join tasks in _context.Tasks on TodoList.Id equals tasks.TodoListId into g
-                where TodoList.OwnerId == ownerId
+                where TodoList.OwnerId == ownerId && TodoList.Status
                 select new{Parent= TodoList, Child = g};
 
             var todoList = query.Distinct().ToList();
+            
             var todoLists = new List<TodoListDto>();
             foreach (var list in todoList)
             {
@@ -87,8 +88,7 @@ namespace JuniorStart.Services
             
             if (!(taskToArchive is null))
             {
-                taskToArchive.SetStatus(false);
-                _context.Tasks.Update(taskToArchive);
+                _context.Tasks.Remove(taskToArchive);
             }
             return _context.SaveChanges() > 0;
         }
