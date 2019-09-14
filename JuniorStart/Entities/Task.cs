@@ -11,11 +11,11 @@ namespace JuniorStart.Entities
 
         public string Description { get; private set; }
 
-        public bool Status { get; private set; }
+        public bool Status { get;  set; }
 
-        public int TodoListId { get; private set; }
+        public int TodoListId { get; set; }
 
-        public virtual TodoList TodoList { get; private set; }
+        public virtual TodoList TodoList { get; set; }
 
         public Task(TaskDto taskDto)
         {
@@ -42,6 +42,11 @@ namespace JuniorStart.Entities
         public void SetTodoListId(int id)
         {
             TodoListId = id;
+        }
+
+        public void SetTodoList(TodoList list)
+        {
+            TodoList = list;
         }
         
     }

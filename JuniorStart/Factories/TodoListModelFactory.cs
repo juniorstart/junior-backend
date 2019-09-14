@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using JuniorStart.DTO;
 using JuniorStart.Entities;
 
@@ -12,18 +13,28 @@ namespace JuniorStart.Factories
             {
                 Id = model.Id,
                 Name = model.Name,
-                OwnerId = model.Owner.Id,
+                OwnerId = model.OwnerId,
                 Status = true,
-                Tasks = new List<TaskDto>()
+                Tasks = model.Tasks.ConvertAll(CreateTaskDto).ToList()
             };
         }
 
         public TodoList Map(TodoListDto model)
         {
-            var todoList = new TodoList(){Id = model.Id};
-            todoList.SetName(model.Name);
-            todoList.SetOwnerId(model.OwnerId);
+            var todoList = new TodoList(model);
+            
             return todoList;
+        }
+
+        public TaskDto CreateTaskDto(Task task)
+        {
+            return new TaskDto()
+            {
+                Id =  task.Id,
+                Description =  task.Description,
+                Status =  task.Status,
+                TodoListId = task.TodoListId
+            };
         }
     }
 }

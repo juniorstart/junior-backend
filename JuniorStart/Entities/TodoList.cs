@@ -12,17 +12,18 @@ namespace JuniorStart.Entities
 
         public string Name { get; private set; }
 
-        private List<Task> Tasks { get;  set; }
+        public List<Task> Tasks { get;  set; }
         public bool Status { get; set; }
 
-        public int OwnerId { get;  private set; }
-        public User Owner { get; private set; }
+        public int OwnerId { get;  set; }
+        public User Owner { get;  set; }
 
         public TodoList(TodoListDto listDto)
         {
             Name = listDto.Name;
             Tasks = listDto.Tasks.ConvertAll(x=> new Task(x)).ToList();
             OwnerId = listDto.OwnerId;
+            Status = listDto.Status;
         }
 
         public TodoList()
@@ -42,6 +43,11 @@ namespace JuniorStart.Entities
         public void SetOwnerId(int id)
         {
             OwnerId = id;
+        }
+
+        public void SetOwner(User model)
+        {
+            Owner = model;
         }
 
     }

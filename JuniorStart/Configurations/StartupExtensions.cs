@@ -55,7 +55,7 @@ namespace JuniorStart.Configurations
         {
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
-            
+            services.AddScoped<ITodoListService, TodoListService>();
             services.RegisterAllTypes(typeof(IModelFactory<,>), typeof(RecruitmentModelFactory),
                 ServiceLifetime.Scoped);
             services.AddScoped<IRecruitmentService, RecruitmentService>();

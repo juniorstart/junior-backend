@@ -6,6 +6,8 @@ using JuniorStart.Entities;
 using JuniorStart.Factories;
 using JuniorStart.Repository;
 using JuniorStart.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace JuniorStart.Services
 {
@@ -30,8 +32,13 @@ namespace JuniorStart.Services
 
         public List<TodoListDto> GetTodoListsForUser(int ownerId)
         {
+            var query = from TodoList in _context.TodoLists
+                join tasks in _context.Tasks on TodoList.Id equals tasks.TodoListId
+                where TodoList.OwnerId == ownerId
+                select TodoList;
+
+            var todoList = query.ToList().Distinct();
             var todoLists = new List<TodoListDto>();
-            var todoList = _context.TodoLists.Where(rec => rec.OwnerId == ownerId);
             foreach (var list in todoList)
             {
                 todoLists.Add(_todoListModelFactory.Create(list));
@@ -48,7 +55,9 @@ namespace JuniorStart.Services
 
         public bool CreateTodoList(TodoListDto requestModel)
         {
-            _context.TodoLists.Add(_todoListModelFactory.Map(requestModel));
+            TodoList newModel = _todoListModelFactory.Map(requestModel);
+            newModel.SetOwner(_context.Users.SingleOrDefault(x => x.Id == requestModel.OwnerId));
+            _context.TodoLists.Add(newModel);
             return _context.SaveChanges() > 0;
         }
 
@@ -89,7 +98,6 @@ namespace JuniorStart.Services
             TodoList todoListToArchieve = _context.TodoLists.FirstOrDefault(rec => rec.Id == id);
             if (!(todoListToArchieve is null))
             {
-                todoListToArchieve.Status = false;
                 _context.TodoLists.Update(todoListToArchieve);
             }
 

@@ -77,7 +77,7 @@ namespace JuniorStart.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     POST /todolist/create
+        ///     POST /todolist
         ///     {
         ///        "name": "Test",
         ///     }
@@ -88,7 +88,7 @@ namespace JuniorStart.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
         /// <returns></returns>
-        [HttpPost("todolist/create")]
+        [HttpPost("todolist")]
         [ProducesResponseType(typeof(TodoListDto), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
@@ -105,7 +105,7 @@ namespace JuniorStart.Controllers
         /// <remarks>
         /// Sample request:
         /// 
-        ///     POST /task/create
+        ///     POST /task
         ///     {
         ///        "description": "Test",
         ///        "todoListId": 1,
@@ -117,7 +117,7 @@ namespace JuniorStart.Controllers
         /// <response code="401">Unauthorized</response>
         /// <response code="500">If unexpected error appear</response>
         /// <returns></returns>
-        [HttpPost("task/create")]
+        [HttpPost("task")]
         [ProducesResponseType(typeof(TaskDto), 200)]
         [ProducesResponseType(401)]
         [ProducesResponseType(500)]
