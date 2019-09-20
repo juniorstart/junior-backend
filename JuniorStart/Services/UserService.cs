@@ -27,7 +27,7 @@ namespace JuniorStart.Services
 
             User user = _modelFactory.Map(userDto);
             byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(user.Password, out passwordHash, out passwordSalt);
+            CreatePasswordHash(userDto.Password, out passwordHash, out passwordSalt);
             user.SetHash(passwordHash);
             user.SetSalt(passwordSalt);
 

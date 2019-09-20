@@ -19,8 +19,6 @@ namespace JuniorStart.Entities
         
         public string Login { get; private set; }
 
-        public string Password { get; private set; }
-
         private bool IsActive { get;  set; }
         public byte[] PasswordHash { get; private set; }
         public byte[] PasswordSalt { get; private set; }
@@ -33,7 +31,6 @@ namespace JuniorStart.Entities
             LastName = model.LastName;
             Email = model.Email;
             Login = model.Login;
-            Password = model.Password;
             IsActive = true;
             RecruitmentInformations = new List<RecruitmentInformation>();
             TodoLists = new List<TodoList>();
@@ -68,15 +65,6 @@ namespace JuniorStart.Entities
             }
 
             IsActive = isActive;
-        }
-        public void SetPassword(string password)
-        {
-            if (Password == password)
-            {
-                return;
-            }
-
-            Password = password;
         }
         public void SetLogin(string login)
         {
