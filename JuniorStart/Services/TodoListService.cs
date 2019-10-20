@@ -37,6 +37,7 @@ namespace JuniorStart.Services
                 where TodoList.OwnerId == ownerId && TodoList.Status
                 select new{Parent= TodoList, Child = g};
 
+            var test = query.ToList();
             var todoList = query.Distinct().ToList();
             
             var todoLists = new List<TodoListDto>();
@@ -98,6 +99,7 @@ namespace JuniorStart.Services
             TodoList todoListToArchieve = _context.TodoLists.FirstOrDefault(rec => rec.Id == id);
             if (!(todoListToArchieve is null))
             {
+                todoListToArchieve.Status = false;
                 _context.TodoLists.Update(todoListToArchieve);
             }
 
