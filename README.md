@@ -1,12 +1,9 @@
 # junior-backend
 
-## Run Setup
+## Run application
 
 ``` bash
-# go into juniorstart directory
 cd JuniorStart
-
-# run docker
 docker-compose up --build
-
+http://localhost:5001/
 ```
