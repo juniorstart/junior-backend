@@ -86,7 +86,6 @@ namespace JuniorStart.Services
         public bool ArchiveTask(int id)
         {
             Task taskToArchive = _context.Tasks.FirstOrDefault(rec => rec.Id == id);
-            
             if (!(taskToArchive is null))
             {
                 _context.Tasks.Remove(taskToArchive);
