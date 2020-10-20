@@ -41,6 +41,14 @@ namespace JuniorStart
             services.ConfigureCors();
             services.ConfigureSwagger();
             services.ConfigureServices();
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                                           ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationSeed applicationSeed,ILoggerFactory loggerFactory)
