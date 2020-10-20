@@ -43,7 +43,6 @@ namespace JuniorStart
             services.ConfigureSwagger();
             services.ConfigureServices();
 
-
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationSeed applicationSeed,ILoggerFactory loggerFactory)
