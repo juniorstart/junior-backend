@@ -106,9 +106,29 @@ namespace JuniorStart.Configurations
 
         public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+            string connectionString = null;
+            string envVar = Environment.GetEnvironmentVariable("DATABASE_URL");
+            if (string.IsNullOrEmpty(envVar))
+            {
+                connectionString = configuration.GetConnectionString("PostgreSQL");
+            }
+            else
+            {
+                //parse database URL. Format is postgres://<username>:<password>@<host>/<dbname>
+                var uri = new Uri(envVar);
+                var username = uri.UserInfo.Split(':')[0];
+                var password = uri.UserInfo.Split(':')[1];
+                connectionString =
+                "; Database=" + uri.AbsolutePath.Substring(1) +
+                "; Username=" + username +
+                "; Password=" + password +
+                "; Port=" + uri.Port +
+                "; SSL Mode=Require; Trust Server Certificate=true;";
+            }
+
             services.AddDbContext<ApplicationContext>(options =>
             {
-                options.UseNpgsql(configuration.GetConnectionString("PostgreSQL"));
+                options.UseNpgsql(connectionString);
             });
         }
 
