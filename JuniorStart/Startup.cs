@@ -4,6 +4,7 @@ using JuniorStart.Middlewares;
 using JuniorStart.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,13 +43,7 @@ namespace JuniorStart
             services.ConfigureSwagger();
             services.ConfigureServices();
 
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
-                                           ForwardedHeaders.XForwardedProto;
-                options.KnownNetworks.Clear();
-                options.KnownProxies.Clear();
-            });
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ApplicationSeed applicationSeed,ILoggerFactory loggerFactory)
