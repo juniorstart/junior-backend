@@ -4,5 +4,5 @@ setup:
     as: DATABASE
 build:
   docker:
-    api: JuniorStart/api.Dockerfile
+    web: JuniorStart/api.Dockerfile
     
