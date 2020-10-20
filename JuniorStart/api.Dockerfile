@@ -9,5 +9,6 @@ WORKDIR /app
 COPY --from=build /app/out .
 
 EXPOSE $PORT
+ENV ASPNETCORE_URLS=http://+:5001
 
 ENTRYPOINT ["dotnet", "JuniorStart.dll"]
