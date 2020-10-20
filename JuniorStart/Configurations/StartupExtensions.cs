@@ -22,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 using Swashbuckle.AspNetCore;
 
 namespace JuniorStart.Configurations
@@ -106,24 +107,30 @@ namespace JuniorStart.Configurations
 
         public static void ConfigureDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+            var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
             string connectionString = null;
-            string envVar = Environment.GetEnvironmentVariable("DATABASE_URL");
-            if (string.IsNullOrEmpty(envVar))
+
+            if (string.IsNullOrEmpty(databaseUrl))
             {
                 connectionString = configuration.GetConnectionString("PostgreSQL");
             }
             else
             {
-                //parse database URL. Format is postgres://<username>:<password>@<host>/<dbname>
-                var uri = new Uri(envVar);
-                var username = uri.UserInfo.Split(':')[0];
-                var password = uri.UserInfo.Split(':')[1];
-                connectionString =
-                "; Database=" + uri.AbsolutePath.Substring(1) +
-                "; Username=" + username +
-                "; Password=" + password +
-                "; Port=" + uri.Port +
-                "; SSL Mode=Require; Trust Server Certificate=true;";
+                var databaseUri = new Uri(databaseUrl);
+                var userInfo = databaseUri.UserInfo.Split(':');
+
+                var builder = new NpgsqlConnectionStringBuilder
+                {
+                    Host = databaseUri.Host,
+                    Port = databaseUri.Port,
+                    Username = userInfo[0],
+                    Password = userInfo[1],
+                    Database = databaseUri.LocalPath.TrimStart('/'),
+                    SslMode = SslMode.Require,
+                    TrustServerCertificate = true
+                };
+
+                connectionString = builder.ToString();
             }
 
             services.AddDbContext<ApplicationContext>(options =>
