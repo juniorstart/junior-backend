@@ -1,3 +1,4 @@
-﻿build:
+build:
   docker:
-    web: JuniorStart/api.Dockerfile
+    api: JuniorStart/api.Dockerfile
+    
