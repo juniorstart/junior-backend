@@ -24,6 +24,7 @@ namespace JuniorStart
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureDatabase(Configuration);
+            services.AddHttpsRedirection(options => { options.HttpsPort = 443; });
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
