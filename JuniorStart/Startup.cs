@@ -25,8 +25,8 @@ namespace JuniorStart
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureDatabase(Configuration);
-            
 
+            services.ConfigureCors();
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => { options.SerializerSettings.Formatting = Formatting.Indented; })
@@ -39,7 +39,7 @@ namespace JuniorStart
             services.AddTransient<ApplicationSeed>();
             services.ConfigureFilters();
             services.ConfigureAuthentication(Configuration);
-            services.ConfigureCors();
+            
             services.ConfigureSwagger();
             services.ConfigureServices();
 

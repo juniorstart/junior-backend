@@ -41,6 +41,15 @@ namespace JuniorStart.Configurations
                             .AllowAnyHeader()
                             .AllowCredentials();
                     });
+
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .AllowCredentials();
+                    });
             });
         }
 
