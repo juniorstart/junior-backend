@@ -74,7 +74,7 @@ namespace JuniorStart.Controllers
         [HttpPost("/Register")]
         public IActionResult Register([FromBody] UserViewModel userParam)
         {
-            _logger.LogInformation(string.Format("User with login {0} has been created"), userParam.User.Login);
+            _logger.LogInformation(string.Format("User with login {0} has been created", userParam.User.Login));
             return Ok(_userService.Create(userParam.User));
         }
     }
