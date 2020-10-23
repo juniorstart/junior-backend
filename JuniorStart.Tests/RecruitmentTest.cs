@@ -4,7 +4,6 @@ using JuniorStart.Factories;
 using JuniorStart.Repository;
 using JuniorStart.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
