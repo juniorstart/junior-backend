@@ -49,6 +49,59 @@ namespace JuniorStart.Services
             return todoLists;
         }
 
+        public int CountTodoListsForUser(int userId)
+        {
+            return GetTodoListsForUser(userId).Count;
+        }
+
+        public int CountNotFinishedTasksForUser(int userId)
+        {
+            var lists = GetTodoListsForUser(userId);
+            int count = 0;
+            foreach(var list in lists)
+            {
+                foreach(var task in list.Tasks)
+                {
+                    if (!task.Status)
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public int CountFinishedTasksForUser(int userId)
+        {
+            var lists = GetTodoListsForUser(userId);
+            int count = 0;
+            foreach (var list in lists)
+            {
+                foreach (var task in list.Tasks)
+                {
+                    if (task.Status)
+                    {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        public int CountAllTasksForUser(int userId)
+        {
+            var lists = GetTodoListsForUser(userId);
+            int count = 0;
+            foreach (var list in lists)
+            {
+                foreach (var task in list.Tasks)
+                {
+                    count++;
+                }
+            }
+            return count;
+        }
+
         public TodoListDto GetTodoListById(int id)
         {
             TodoList todolist = _context.TodoLists.FirstOrDefault(rec => rec.Id == id);

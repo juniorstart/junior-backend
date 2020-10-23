@@ -13,5 +13,10 @@ namespace JuniorStart.Services.Interfaces
         bool UpdateTask(int id, TaskDto requestModel);
         bool ArchiveTask(int id);
         bool ArchiveTodoList(int id);
+        int CountTodoListsForUser(int userId);
+        int CountFinishedTasksForUser(int userId);
+        int CountNotFinishedTasksForUser(int userId);
+        int CountAllTasksForUser(int userId);
+
     }
 }
