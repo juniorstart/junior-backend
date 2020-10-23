@@ -121,6 +121,7 @@ namespace JuniorStart.Services
             _context.Tasks.Add(_taskModelFactory.Map(requestModel));
             return _context.SaveChanges() > 0;
         }
+
         public bool UpdateTask(int id, TaskDto requestModel)
         {
             Task originalTask = 
