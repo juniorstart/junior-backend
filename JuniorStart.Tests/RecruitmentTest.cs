@@ -51,6 +51,8 @@ namespace JuniorStart.Tests
                 var recruitmentsList = recruitmentService.GetRecruitmentsForUser(3);
 
                 Assert.That(recruitmentsList.Count > 0);
+                Assert.That(recruitmentsList.FirstOrDefault().OwnerId == 3);
+                Assert.That(recruitmentsList.FirstOrDefault().City.Equals("Kraków"));
 
             }
         }
