@@ -14,7 +14,6 @@ namespace JuniorStart.Tests
     [TestFixture()]
     public class RecruitmentTest
     {
-        private Mock<IModelFactory<UserDto, User>> factoryMock;
         private DbContextOptions<ApplicationContext> options;
 
         [SetUp]
