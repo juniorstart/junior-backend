@@ -1,10 +1,10 @@
-FROM microsoft/dotnet:3.1-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /app
 COPY *.csproj ./
 RUN dotnet restore JuniorStart.csproj
 COPY . ./
 RUN dotnet publish JuniorStart.csproj -c Release -o out
-FROM microsoft/dotnet:3.1-aspnetcore-runtime AS runtime
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1 AS runtime
 WORKDIR /app
 COPY --from=build /app/out .
 
