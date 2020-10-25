@@ -38,7 +38,7 @@ namespace JuniorStart.Controllers
                     RoomConnections.Add(roomName, new List<string>());
                 }
 
-                var otherUsers = RoomConnections[roomName];
+                List<string> otherUsers = RoomConnections[roomName];
                 RoomConnections[roomName].Add(Context.ConnectionId);
 
                 room.Users.Add(user);

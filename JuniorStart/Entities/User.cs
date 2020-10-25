@@ -25,6 +25,7 @@ namespace JuniorStart.Entities
         private List<RecruitmentInformation> RecruitmentInformations { get; set; }
 
         private List<TodoList> TodoLists { get; set; }
+
         public User(UserDto model)
         {
             FirstName = model.FirstName;

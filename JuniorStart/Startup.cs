@@ -1,5 +1,6 @@
 ﻿using FluentValidation.AspNetCore;
 using JuniorStart.Configurations;
+using JuniorStart.Controllers;
 using JuniorStart.Middlewares;
 using JuniorStart.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -26,10 +27,10 @@ namespace JuniorStart
         {
             services.ConfigureDatabase(Configuration);
 
-            services.ConfigureCors();
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => { options.SerializerSettings.Formatting = Formatting.Indented; })
+
+            services.AddMvc(option => option.EnableEndpointRouting = false)
+                .SetCompatibilityVersion(CompatibilityVersion.Latest)
+                
                 .AddFluentValidation(fv =>
                 {
                     fv.RegisterValidatorsFromAssemblyContaining<Startup>();
@@ -39,9 +40,10 @@ namespace JuniorStart
             services.AddTransient<ApplicationSeed>();
             services.ConfigureFilters();
             services.ConfigureAuthentication(Configuration);
-            
+            //services.ConfigureCors();
             services.ConfigureSwagger();
             services.ConfigureServices();
+            services.AddSignalR();
 
         }
 
@@ -62,7 +64,12 @@ namespace JuniorStart
             app.ExceptionHandler();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseCors("CorsPolicy");
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<ChatHub>("/chat");
+            });
             app.UseMvc();
             app.EnableSwagger();
             app.UseMiddleware<JwtTokenSlidingExpirationMiddleware>();

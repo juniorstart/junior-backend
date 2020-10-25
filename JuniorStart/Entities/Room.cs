@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JuniorStart.Entities
 {
-    public class Room
+    public class Room : IEntity
     {
         public Room()
         {
@@ -15,7 +15,7 @@ namespace JuniorStart.Entities
         [Column("RoomId")]
         public int Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Message> Messages { get; set; }
-        public ICollection<User> Users { get; set; }
+        public List<Message> Messages { get; set; }
+        public List<User> Users { get; set; }
     }
 }

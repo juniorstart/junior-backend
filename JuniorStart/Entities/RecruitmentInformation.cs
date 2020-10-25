@@ -6,7 +6,8 @@ namespace JuniorStart.Entities
 {
     public class RecruitmentInformation : IEntity
     {
-        [Column("RecruitmentId")] public int Id { get; set; }
+        [Column("RecruitmentId")]
+        public int Id { get; set; }
 
         public int OwnerId { get; set; }
 

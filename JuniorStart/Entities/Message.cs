@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JuniorStart.Entities
 {
-    public class Message
+    public class Message : IEntity
     {
         [Column("MessageId")]
         public int Id { get; set; }
