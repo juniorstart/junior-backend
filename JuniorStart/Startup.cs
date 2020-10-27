@@ -27,7 +27,7 @@ namespace JuniorStart
         {
             services.ConfigureDatabase(Configuration);
 
-
+            services.AddCors();
             services.AddMvc(option => option.EnableEndpointRouting = false)
                 .SetCompatibilityVersion(CompatibilityVersion.Latest)
                 
@@ -64,7 +64,10 @@ namespace JuniorStart
             app.ExceptionHandler();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(options => {
+                options.WithOrigins("http://localhost:4200", "https://juniorstartng.herokuapp.com").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+
+            });
             
             app.UseSignalR(routes =>
             {
