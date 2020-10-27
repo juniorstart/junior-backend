@@ -111,7 +111,7 @@ namespace JuniorStart.Controllers
                 _context.Messages.Add(message);
                 _context.SaveChanges();
                 room.Messages.Add(message);
-
+                */
                 var users = new List<string>();
                 foreach (var rooms in RoomConnections)
                 {
@@ -120,8 +120,8 @@ namespace JuniorStart.Controllers
                         users = rooms.Value;
                     }
                 }
-                _context.SaveChanges();
-                */
+                //_context.SaveChanges();
+                
                 Clients.Clients(users).BroadcastMessage(message).GetAwaiter().GetResult();
             }
         }
