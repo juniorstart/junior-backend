@@ -107,6 +107,7 @@ namespace JuniorStart.Controllers
             if (room != null)
             {
 
+                /*
                 _context.Messages.Add(message);
                 _context.SaveChanges();
                 room.Messages.Add(message);
@@ -120,7 +121,7 @@ namespace JuniorStart.Controllers
                     }
                 }
                 _context.SaveChanges();
-
+                */
                 Clients.Clients(users).BroadcastMessage(message).GetAwaiter().GetResult();
             }
         }
