@@ -8,14 +8,14 @@ namespace JuniorStart.Configurations
     {
         public LoginModelValidator()
         {
-            RuleFor(l=>l.Login)
+            RuleFor(u => u.Login)
                 .NotEmpty()
-                .MinimumLength(6)
+                .MinimumLength(4)
                 .MaximumLength(30)
                 .Matches("^[a-zA-Z].*")
-                .WithMessage("Login must be between 6 and 30 letters, and starts with letter.");
-                
-            RuleFor(l=>l.Password)
+                .WithMessage("Login must be between 4 and 30 letters, and starts with letter.");
+
+            RuleFor(u => u.Password)
                 .NotEmpty()
                 .MinimumLength(6)
                 .MaximumLength(30)
