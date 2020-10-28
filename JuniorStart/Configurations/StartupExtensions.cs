@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using JuniorStart.DTO;
 using JuniorStart.Entities;
@@ -169,7 +171,9 @@ namespace JuniorStart.Configurations
                         {
                             var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
                             int userId = int.Parse(context.Principal.Identity.Name);
+
                             var user = userService.Get(userId);
+
                             if (user == null)
                             {
                                 context.Fail("Unauthorized");

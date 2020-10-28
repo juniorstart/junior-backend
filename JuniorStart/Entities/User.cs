@@ -53,7 +53,10 @@ namespace JuniorStart.Entities
         {
             TodoLists.Add(list);
         }
-        
+        public string GetFullName()
+        {
+            return FirstName + " " + LastName;
+        }
         public void AddItemToRecruitmentInformations(RecruitmentInformation listItem)
         {
             RecruitmentInformations.Add(listItem);

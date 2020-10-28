@@ -23,13 +23,14 @@ namespace JuniorStart.Middlewares
             }
             
             ClaimsPrincipal claimsPrincipal = context.Request.HttpContext.User;
+            
             if (claimsPrincipal == null || !claimsPrincipal.Identity.IsAuthenticated)
             {
                 return _next(context);
             }
 
             // Extract the claims and put them into a new JWT
-            context.Response.Headers.Add("Set-Authorization", _authenticationService.CreateToken(claimsPrincipal.Claims.FirstOrDefault()));
+            context.Response.Headers.Add("Set-Authorization", _authenticationService.CreateToken(claimsPrincipal.Claims.ToList()));
             
             return _next(context);
         }

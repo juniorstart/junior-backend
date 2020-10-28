@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -32,22 +33,18 @@ namespace JuniorStart.Services
             if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 throw new Exception("Invalid Password");
 
-            Claim claim = new Claim(ClaimTypes.Name,user.Id.ToString());
-
-            return CreateToken(claim);
+            List<Claim> claims = new List<Claim>() { new Claim(ClaimTypes.Name, user.Id.ToString()), new Claim("Fullname", user.GetFullName()) };
+            return CreateToken(claims);
         }
 
-        public StringValues CreateToken(Claim claims)
+        public StringValues CreateToken(List<Claim> claims)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration.GetSection("JWT").GetSection("SecretKey").Value);
             
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    claims
-                }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)

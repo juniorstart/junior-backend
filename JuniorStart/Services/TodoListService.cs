@@ -32,18 +32,12 @@ namespace JuniorStart.Services
 
         public List<TodoListDto> GetTodoListsForUser(int ownerId)
         {
-            var query = from TodoList in _context.TodoLists
-                join tasks in _context.Tasks on TodoList.Id equals tasks.TodoListId into g
-                where TodoList.OwnerId == ownerId && TodoList.Status
-                select new{Parent= TodoList, Child = g};
-
-            var test = query.ToList();
-            var todoList = query.Distinct().ToList();
-            
+            var todoListEntities = _context.TodoLists.Where(x => x.OwnerId == ownerId).ToList();
+          
             var todoLists = new List<TodoListDto>();
-            foreach (var list in todoList)
+            foreach (var list in todoListEntities)
             {
-                todoLists.Add(_todoListModelFactory.Create(list.Parent));
+                todoLists.Add(_todoListModelFactory.Create(list));
             }
 
             return todoLists;
