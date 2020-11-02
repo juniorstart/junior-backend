@@ -15,7 +15,7 @@ namespace JuniorStart.Entities
 
         public int TodoListId { get; set; }
 
-        public virtual TodoList TodoList { get; set; }
+        public TodoList TodoList { get; set; }
 
         public Task(TaskDto taskDto)
         {

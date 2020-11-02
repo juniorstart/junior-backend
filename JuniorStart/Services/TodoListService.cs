@@ -32,7 +32,7 @@ namespace JuniorStart.Services
 
         public List<TodoListDto> GetTodoListsForUser(int ownerId)
         {
-            var todoListEntities = _context.TodoLists.Where(x => x.OwnerId == ownerId).ToList();
+            var todoListEntities = _context.TodoLists.Where(x => x.OwnerId == ownerId).Include(y => y.Tasks).ToList();
           
             var todoLists = new List<TodoListDto>();
             foreach (var list in todoListEntities)
@@ -112,7 +112,10 @@ namespace JuniorStart.Services
 
         public bool CreateTask(TaskDto requestModel)
         {
-            _context.Tasks.Add(_taskModelFactory.Map(requestModel));
+            var task = _taskModelFactory.Map(requestModel);
+            task.TodoList = _context.TodoLists.FirstOrDefault(x => x.Id == requestModel.TodoListId);
+             _context.Tasks.Add(task);
+            var sss = _context.Tasks.ToList();
             return _context.SaveChanges() > 0;
         }
 
