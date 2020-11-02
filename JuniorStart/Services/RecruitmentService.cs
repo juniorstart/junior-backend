@@ -6,6 +6,7 @@ using JuniorStart.Entities;
 using JuniorStart.Factories;
 using JuniorStart.Repository;
 using JuniorStart.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace JuniorStart.Services
 {
@@ -31,7 +32,7 @@ namespace JuniorStart.Services
         public List<RecruitmentInformationDto> GetRecruitmentsForUser(int ownerId)
         {
             List<RecruitmentInformationDto> recruitments = _context.RecruitmentInformations
-                .Where(rec => rec.Owner.Id.Equals(ownerId) && rec.IsActive)
+                .Where(rec => rec.OwnerId.Equals(ownerId) && rec.IsActive)
                 .Select(rec => _modelFactory.Create(rec)).ToList();
             return recruitments;
         }
