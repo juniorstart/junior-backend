@@ -10,6 +10,9 @@ using Task = System.Threading.Tasks.Task;
 
 namespace JuniorStart.Controllers
 {
+    /// <summary>
+    /// Chat Hub
+    /// </summary>
     public class ChatHub : Hub<ITypedHubClient>
     {
         private static readonly Dictionary<string, List<string>> RoomConnections = new Dictionary<string, List<string>>();
