@@ -1,5 +1,9 @@
 # junior-backend
 
+## Business description
+The application is to help people applying for a new job position in managing the applications sent. Moreover, it also helps to organize your work through the built-in Todo-list.
+The application allows users to integrate themselves through a built-in chat.
+
 ## Run application
 
 ``` bash
